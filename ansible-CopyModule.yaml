@@ -1,0 +1,21 @@
+---
+- name: play to copy files
+  hosts: "*"
+  become: true
+  gather_facts: no
+  vars:
+    bucketname: testcloudcover
+  tasks:
+   - name: copy files to host
+     copy:
+       src: hello.txt
+       dest: /test1/hello.txt
+
+   - name: put an object in s3 bucket
+     aws_s3:
+      aws_access_key: XXXX
+      aws_secret_key: XXXXXX
+      bucket: "{{ bucketname }}"
+      object: /terraform/hello.txt
+      src: /test1/hello.txt
+      mode: put
